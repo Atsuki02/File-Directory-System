@@ -8,13 +8,13 @@ const config: Config = {
   CLIOutput: document.getElementById("list"),
 };
 
-config.CLIInput.addEventListener("keydown", (event) =>
-  submissionSearchEvent(event)
-);
+config.CLIInput.addEventListener("keydown", (event) => {
+  submissionSearchEvent(event);
+});
 
 function submissionSearchEvent(event: KeyboardEvent) {
   if (event.key == "Enter" && config.CLIOutput) {
-    const input = config.CLIInput.value;
+    let input = config.CLIInput.value;
     const inputArr: string[] = Tools.commandLineParser(input);
     const result = Tools.executeCommand(inputArr, rootDir);
     View.appendEchoParagraph(config.CLIOutput, input);
@@ -49,7 +49,6 @@ class FileSystem {
     }
     this.curNode.children.add(newFileNode);
     console.log(newFileNode);
-    console.log(this.curNode.children);
   }
 
   mkdir(folderName: string): void {
@@ -59,6 +58,34 @@ class FileSystem {
     }
     this.curNode.children.add(newDirNode);
     console.log(newDirNode);
+  }
+
+  cd(path: string): void {
+    if (!path) return;
+
+    if (path === "..") {
+      this.curNode = this.curNode.parent || this.root;
+      console.log(this.curNode);
+      return;
+    }
+
+    let current = this.curNode.children.head;
+    while (current !== null) {
+      if (path === current.name) {
+        this.curNode = current;
+        console.log(this.curNode);
+        return;
+      }
+      current = current.next;
+    }
+
+    console.log(`Directory or file '${path}' not found.`);
+  }
+
+  pwd(): string {
+    let result = "";
+    result += `<p>${this.curNode.name}</p>`;
+    return result;
   }
 }
 
@@ -75,19 +102,28 @@ class Tools {
     let command = argsArray[0];
     let name = argsArray[1];
 
-    if (command == "ls") return rootDir.ls();
-    else if (command == "touch") {
-      rootDir.touch(name);
-      return null;
-    } else if (command == "mkdir") {
-      rootDir.mkdir(name);
-      return null;
-    } else {
-      console.log(
-        "MTools.evaluatedResultsStringFromParsedCLIArray:: invalid command name"
-      );
-      return "Invalid command";
+    switch (command) {
+      case "ls":
+        return rootDir.ls();
+      case "touch":
+        rootDir.touch(name);
+        break;
+      case "mkdir":
+        rootDir.mkdir(name);
+        break;
+      case "cd":
+        rootDir.cd(name);
+        break;
+      case "pwd":
+        return rootDir.pwd();
+      default:
+        console.log(
+          "MTools.evaluatedResultsStringFromParsedCLIArray:: invalid command name"
+        );
+        return "Invalid command";
     }
+
+    return null;
   }
 }
 
