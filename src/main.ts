@@ -9,26 +9,57 @@ const config: Config = {
 };
 
 config.CLIInput.addEventListener("keydown", (event) => {
-  submissionSearchEvent(event);
+  if (event.key == "Enter") submissionSearchEvent();
+  if (event.key === "ArrowUp") getPrevCommand();
+  if (event.key === "ArrowDown") getNextCommand();
 });
 
-function submissionSearchEvent(event: KeyboardEvent) {
-  if (event.key == "Enter" && config.CLIOutput) {
+function submissionSearchEvent() {
+  rootDir.commandHistory.addCommand(config.CLIInput.value);
+  if (config.CLIOutput) {
     let input = config.CLIInput.value;
     const inputArr: string[] = Tools.commandLineParser(input);
-    const result = Tools.executeCommand(inputArr, rootDir);
-    View.appendEchoParagraph(config.CLIOutput, input);
-    View.appendResult(config.CLIOutput, result);
+    let validatorResponse = Tools.inputArrayValidator(inputArr);
+    if (validatorResponse["isValid"] == false) {
+      View.appendResultParagraph(
+        config.CLIOutput,
+        validatorResponse["errorMessage"]
+      );
+    } else {
+      View.appendEchoParagraph(config.CLIOutput, input);
+      const result = Tools.executeCommand(inputArr, rootDir);
+      View.appendResult(config.CLIOutput, result);
+    }
+  }
+}
+
+function getPrevCommand() {
+  const previousCommand = rootDir.commandHistory.getPreviousCommand();
+  console.log(previousCommand);
+  if (previousCommand !== null) {
+    config.CLIInput.value = previousCommand;
+  }
+}
+function getNextCommand() {
+  const nextCommand = rootDir.commandHistory.getNextCommand();
+  if (nextCommand !== null) {
+    config.CLIInput.value = nextCommand;
   }
 }
 
 class FileSystem {
   root: Node;
   curNode: Node;
+  commandHistory: CommandHistory;
 
   constructor() {
     this.root = new Node("/", "directory", null);
     this.curNode = this.root;
+    this.commandHistory = new CommandHistory();
+  }
+
+  getCommandHistory() {
+    return this.commandHistory;
   }
 
   ls(): string {
@@ -79,13 +110,35 @@ class FileSystem {
       current = current.next;
     }
 
-    console.log(`Directory or file '${path}' not found.`);
+    return View.appendResult(
+      config.CLIOutput,
+      `Directory or file '${path}' not found.`
+    );
   }
 
   pwd(): string {
     let result = "";
     result += `<p>${this.curNode.name}</p>`;
     return result;
+  }
+
+  rm(name: string): void {
+    let current = this.curNode.children.head;
+    let prev = null;
+
+    while (current !== null) {
+      if (name === current.name) {
+        if (prev === null) {
+          this.curNode.children.head = current.next;
+        } else {
+          prev.next = current.next;
+        }
+        return;
+      }
+
+      prev = current;
+      current = current.next;
+    }
   }
 }
 
@@ -116,6 +169,9 @@ class Tools {
         break;
       case "pwd":
         return rootDir.pwd();
+      case "rm":
+        rootDir.rm(name);
+        break;
       default:
         console.log(
           "MTools.evaluatedResultsStringFromParsedCLIArray:: invalid command name"
@@ -125,6 +181,36 @@ class Tools {
 
     return null;
   }
+
+  static inputArrayValidator(inputArr: string[]): ValidationResult {
+    const validCommands = ["ls", "pwd", "touch", "mkdir", "cd", "rm"];
+    const command = inputArr[0];
+
+    if (!validCommands.includes(command)) {
+      return {
+        isValid: false,
+        errorMessage: `Invalid command: ${command}. Supported commands are: ${validCommands.join(
+          ", "
+        )}`,
+      };
+    }
+
+    const expectedArgsCount = command === "ls" || command === "pwd" ? 1 : 2;
+
+    if (inputArr.length !== expectedArgsCount) {
+      return {
+        isValid: false,
+        errorMessage: `Command line input must contain exactly ${expectedArgsCount} elements: 'commandName arguments'`,
+      };
+    }
+
+    return { isValid: true, errorMessage: "" };
+  }
+}
+
+interface ValidationResult {
+  isValid: boolean;
+  errorMessage: string;
 }
 
 class View {
@@ -142,6 +228,10 @@ class View {
   static appendResult(parentDiv: HTMLElement, result: string | null): void {
     if (!result) return;
     parentDiv.innerHTML += `<p>${result}</p>`;
+  }
+
+  static appendResultParagraph(parentDiv: HTMLElement, messege: string) {
+    parentDiv.innerHTML += `<p style="red">${messege}</p>`;
   }
 }
 
@@ -189,5 +279,56 @@ class SinglyLinkedList {
   }
 }
 
+class CommandHistory {
+  head: CommandNode | null;
+  current: CommandNode | null;
+
+  constructor() {
+    this.head = null;
+    this.current = null;
+  }
+
+  addCommand(commandName: string): void {
+    const newCommand = new CommandNode(commandName);
+
+    if (!this.head) {
+      this.head = newCommand;
+      this.current = newCommand;
+      this.current.prev = newCommand;
+    } else {
+      this.current.next = newCommand;
+      newCommand.prev = this.current;
+      this.current = newCommand;
+    }
+  }
+
+  getPreviousCommand(): string | null {
+    if (this.current && this.current.prev) {
+      this.current = this.current.prev;
+      return this.current.value;
+    }
+    return null;
+  }
+
+  getNextCommand(): string | null {
+    if (this.current && this.current.next) {
+      this.current = this.current.next;
+      return this.current.value;
+    }
+    return null;
+  }
+}
+
+class CommandNode {
+  value: string;
+  prev: CommandNode | null;
+  next: CommandNode | null;
+
+  constructor(value: string) {
+    this.value = value;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
 const rootDir = new FileSystem();
-console.log(rootDir);
