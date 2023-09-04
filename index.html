@@ -7,25 +7,39 @@
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
-    <div id="app">
+    <!-- <div id="app">
       <div class="terminal">
+        <header>
+          <h1>Termial</h1>
+        </header>
         <div id="output">
-          <ul id="list">
-            <!-- <li>
-              <p>
-                <span style="color: green">student</span>
-                <span style="color: magenta">@</span>
-                <span style="color: blue">recursionist</span>
-              </p>
-              <p>
-                <span style="color: turquoise">MTools</span>: command given must
-                be from the following:
-                testFS,clearFS,ls,pwd,touch,cd,mkdir,print,setContent,rm
-              </p>
-            </li> -->
-          </ul>
+          <ul id="list"></ul>
         </div>
-        <input id="input" type="text" placeholder="Enter a command..." />
+        <textarea id="input" type="text"></textarea>
+      </div>
+    </div> -->
+
+    <div id="app">
+      <div class="terminal-container">
+        <div class="tabbed-terminals">
+          <div class="tabs">
+            <div class="tab active" data-terminal="terminal-1">
+              Command Prompt
+            </div>
+            <div class="tab" data-terminal="terminal-2">+</div>
+          </div>
+          <div class="terminals">
+            <div id="output" class="terminal">
+              <ul id="list">
+                <li>
+                  Atsuki's PowerShell Copyright (C) Atsuki Corporation. All
+                  rights reserved.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <textarea id="input" type="text"></textarea>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

@@ -29,7 +29,7 @@ function handleKeyDownEvent(event: KeyboardEvent) {
 }
 
 function submissionSearchEvent() {
-  const userInput = config.CLIInput.value;
+  let userInput = config.CLIInput.value;
   rootDir.commandHistory.addCommand(userInput);
 
   if (!config.CLIOutput) return;

@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+li {
+  list-style: none;
+}
+
 #app {
   font-family: "Courier New", monospace;
   background-color: black;
@@ -13,25 +17,64 @@
   width: 100vw;
 }
 
-.terminal {
+.terminal-container {
   width: 100%;
   height: 100%;
   background-color: black;
   color: white;
   display: grid;
-  grid-template-rows: 90% auto;
+  grid-template-rows: 70% 30%;
+}
+
+.tabbed-terminals {
+  display: grid;
+  grid-template-rows: 10% 90%;
 }
 
 #output {
   width: 100%;
-  background-color: black;
+  background-color: rgba(91, 84, 84, 0.304);
   color: white;
-  overflow: scroll;
 }
 
 #input {
   width: 100%;
-  background-color: white;
-  color: black;
+  background-color: rgba(0, 0, 0, 0.97);
+  color: white;
+  outline: none;
   padding: 10px;
+}
+
+.tabs {
+  display: flex;
+  background-color: #333;
+}
+
+.tab {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  border: 1px solid rgb(32, 30, 30);
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+
+.tab.active {
+  background-color: #fff;
+  color: #333;
+}
+
+.terminal {
+  /* display: none; */
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  padding: 10px;
+}
+
+.terminal.active {
+  display: block;
 }
