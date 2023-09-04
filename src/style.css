@@ -33,7 +33,7 @@ li {
 
 #output {
   width: 100%;
-  background-color: rgba(91, 84, 84, 0.304);
+  background-color: rgba(0, 0, 0, 0.97);
   color: white;
 }
 
@@ -51,26 +51,71 @@ li {
 }
 
 .tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px;
+  margin-bottom: 0px;
   padding: 10px 20px;
-  background-color: #333;
   color: #fff;
   outline: none;
   cursor: pointer;
   border: 1px solid rgb(32, 30, 30);
   border-bottom: none;
   border-radius: 5px 5px 0 0;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.opening {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInTab 0.5s ease forwards;
+}
+
+@keyframes fadeInTab {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tab.active {
-  background-color: #fff;
-  color: #333;
+  background-color: rgba(0, 0, 0, 0.97);
+  color: #fff;
+}
+
+.close-tab {
+  cursor: pointer;
+  margin-left: 40px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #fff;
+}
+
+.open-tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  color: #fff;
+  margin: 8px;
+  margin-bottom: 0px;
+  padding-right: 20px;
+  border-right: 1px solid rgb(69, 67, 67);
 }
 
 .terminal {
   /* display: none; */
   width: 100%;
   height: 100%;
-  background-color: black;
   color: white;
   padding: 10px;
 }
