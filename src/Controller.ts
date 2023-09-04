@@ -1,6 +1,6 @@
 import { Tools } from "./model.ts";
-import View from "./view.ts";
 import { rootDir } from "./main.ts";
+import View from "./view.ts";
 
 export interface Config {
   CLIInput: HTMLInputElement;

@@ -16,39 +16,41 @@ class FileSystem {
     return this.commandHistory;
   }
 
-  ls(): string | undefined {
-    const children = this.curNode.getChildren();
-    if (children) {
-      let current = children.head;
-      let result = "";
-      while (current !== null) {
-        result += `<p>${current.name}</p>`;
-        current = current.next;
-      }
-      return result;
+  ls(): string {
+    const children = this.curNode?.getChildren();
+    if (!children) return "";
+
+    let current = children.head;
+    let result = "";
+    while (current !== null) {
+      result += `<p>${current.name}</p>`;
+      current = current.next;
     }
+    return result;
   }
 
   touch(fileName: string): void {
-    const newFileNode = new Node(fileName, "file", this.curNode);
     if (!this.curNode.children) {
       View.appendResultParagraph(
         config.CLIOutput,
-        "File can't be created in the file"
+        "File can't be created here"
       );
       return;
     }
+    const newFileNode = new Node(fileName, "file", this.curNode);
     this.curNode.children.add(newFileNode);
-    console.log(newFileNode);
   }
 
   mkdir(folderName: string): void {
-    const newDirNode = new Node(folderName, "directory", this.curNode);
-    if (!this.curNode.children) {
-      this.curNode.children = new SinglyLinkedList();
+    if (this.curNode?.children) {
+      const newDirNode = new Node(folderName, "directory", this.curNode);
+      this.curNode.children.add(newDirNode);
+    } else {
+      View.appendResultParagraph(
+        config.CLIOutput,
+        "Directory can't be created here"
+      );
     }
-    this.curNode.children.add(newDirNode);
-    console.log(newDirNode);
   }
 
   cd(path: string): void {
@@ -56,15 +58,13 @@ class FileSystem {
 
     if (path === "..") {
       this.curNode = this.curNode.parent || this.root;
-      console.log(this.curNode);
       return;
     }
-
+    if (!this.curNode.children) return;
     let current = this.curNode.children.head;
     while (current !== null) {
       if (path === current.name) {
         this.curNode = current;
-        console.log(this.curNode);
         return;
       }
       current = current.next;
@@ -83,6 +83,7 @@ class FileSystem {
   }
 
   rm(name: string): void {
+    if (!this.curNode.children) return;
     let current = this.curNode.children.head;
     let prev = null;
 
@@ -99,6 +100,12 @@ class FileSystem {
       prev = current;
       current = current.next;
     }
+
+    View.appendResultParagraph(
+      config.CLIOutput,
+      "The speified file of directory can't be found"
+    );
+    return;
   }
 }
 
@@ -186,7 +193,7 @@ class Node {
     this.next = null;
   }
 
-  getChildren(): SinglyLinkedList {
+  getChildren(): SinglyLinkedList | null {
     return this.children;
   }
 }
@@ -230,6 +237,7 @@ class CommandHistory {
       this.current = newCommand;
       this.current.prev = newCommand;
     } else {
+      if (!this.current) return;
       this.current.next = newCommand;
       newCommand.prev = this.current;
       this.current = newCommand;
