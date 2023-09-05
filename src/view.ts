@@ -10,7 +10,10 @@ class View {
     </li>`;
   }
 
-  static appendResult(parentDiv: HTMLElement, result: string | null): void {
+  static appendResult(
+    parentDiv: HTMLElement,
+    result: string | void | null
+  ): void {
     if (!result) return;
     parentDiv.innerHTML += `<p>${result}</p>`;
   }

@@ -7,23 +7,11 @@
     <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
-    <!-- <div id="app">
-      <div class="terminal">
-        <header>
-          <h1>Termial</h1>
-        </header>
-        <div id="output">
-          <ul id="list"></ul>
-        </div>
-        <textarea id="input" type="text"></textarea>
-      </div>
-    </div> -->
-
     <div id="app">
       <div class="terminal-container">
         <div class="tabbed-terminals">
           <div class="tabs">
-            <div class="tab active">
+            <div class="tab active" data-terminal-id="1">
               Command Prompt
               <span class="close-tab">×</span>
             </div>
@@ -31,14 +19,12 @@
           </div>
 
           <div class="terminals">
-            <div id="output" class="terminal">
-              <ul id="list">
-                <li>
-                  Atsuki's PowerShell Copyright (C) Atsuki Corporation. All
-                  rights reserved.
-                </li>
-              </ul>
-            </div>
+            <ul class="terminal list active" data-terminal-id="1">
+              <li>
+                Atsuki's PowerShell Copyright (C) Atsuki Corporation. All rights
+                reserved.
+              </li>
+            </ul>
           </div>
         </div>
         <textarea id="input" type="text"></textarea>
