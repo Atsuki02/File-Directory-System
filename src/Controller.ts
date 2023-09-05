@@ -15,6 +15,7 @@ const config: Config = {
 config.CLIInput.addEventListener("keydown", handleKeyDownEvent);
 
 function handleKeyDownEvent(event: KeyboardEvent) {
+  if (!document.querySelector(".tab")) return;
   switch (event.key) {
     case "Enter":
       submissionSearchEvent(event);
@@ -80,6 +81,7 @@ function setActiveTab(tab: Element | null | undefined) {
     }
   });
 
+  config.CLIInput.focus();
   updateCLIOutputActiveElement();
 }
 

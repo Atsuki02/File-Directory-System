@@ -1,4 +1,4 @@
-import { config, initializeTabs, setActiveTab } from "./Controller";
+import { initializeTabs, setActiveTab } from "./Controller";
 import { FileSystem } from "./model";
 
 export const rootDir = new FileSystem();
@@ -8,6 +8,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const firstTab = document.querySelector(".tab");
   setActiveTab(firstTab);
-
-  config.CLIInput.focus();
 });
