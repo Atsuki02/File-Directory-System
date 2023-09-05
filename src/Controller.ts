@@ -9,7 +9,7 @@ export interface Config {
 
 const config: Config = {
   CLIInput: document.getElementById("input") as HTMLInputElement,
-  CLIOutput: document.getElementById("list") as HTMLElement,
+  CLIOutput: document.querySelector(".terminal.list.active") as HTMLElement,
 };
 
 config.CLIInput.addEventListener("keydown", handleKeyDownEvent);
