@@ -36,6 +36,7 @@ class FileSystem {
     }
     const newFileNode = new Node(fileName, "file", this.curNode);
     this.curNode.children.add(newFileNode);
+    View.appendResult(config.CLIOutput, "New file created");
   }
 
   mkdir(folderName: string): void {
@@ -72,22 +73,16 @@ class FileSystem {
   }
 
   pwd(): string {
-    let result = "/";
-
-    if (!this.curNode.children) {
-      return `<p>${result}</p>`;
-    }
-
     const pathComponents = [];
-    let current = this.curNode.children.head;
+    let current = this.curNode;
 
-    while (current !== null) {
-      pathComponents.push(current.name);
-      current = current.next;
+    while (current.parent !== null) {
+      pathComponents.unshift(current.name);
+      current = current.parent;
     }
 
-    result += pathComponents.join("/");
-    return `<p>${result}</p>`;
+    const result = "/" + pathComponents.join("/");
+    return result;
   }
 
   rm(name: string): void {
