@@ -192,7 +192,6 @@ class Node {
   type: string;
   parent: Node | null;
   children: SinglyLinkedList | null;
-  time: string;
   next: Node | null;
 
   constructor(name: string, type: string, parent: Node | null) {
@@ -200,7 +199,6 @@ class Node {
     this.type = type;
     this.parent = parent;
     this.children = this.type === "directory" ? new SinglyLinkedList() : null;
-    this.time = new Date().toString();
     this.next = null;
   }
 
