@@ -108,9 +108,6 @@ li {
   border-right: 1px solid rgb(69, 67, 67);
 }
 
-.open-tab {
-}
-
 .terminal {
   display: none;
   background-color: rgba(0, 0, 0, 0.97);
