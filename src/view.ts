@@ -18,6 +18,12 @@ class View {
   static appendResultParagraph(parentDiv: HTMLElement, messege: string) {
     parentDiv.innerHTML += `<p style="red">${messege}</p>`;
   }
+
+  static clearHistory(parentDiv: HTMLElement): void {
+    parentDiv.innerHTML = `<li>
+    Atsuki's PowerShell Copyright (C) Atsuki Corporation. All
+    rights reserved.</li>`;
+  }
 }
 
 export default View;

@@ -107,6 +107,11 @@ class FileSystem {
     );
     return;
   }
+
+  clear(): void {
+    View.clearHistory(config.CLIOutput);
+    return;
+  }
 }
 
 class Tools {
@@ -117,7 +122,7 @@ class Tools {
   static executeCommand(
     argsArray: string[],
     rootDir: FileSystem
-  ): string | null {
+  ): string | null | void {
     const command = argsArray[0];
     const name = argsArray[1];
 
@@ -138,6 +143,8 @@ class Tools {
       case "rm":
         rootDir.rm(name);
         break;
+      case "clear":
+        return rootDir.clear();
       default:
         return "Invalid command";
     }
@@ -146,7 +153,7 @@ class Tools {
   }
 
   static inputArrayValidator(inputArr: string[]): ValidationResult {
-    const validCommands = ["ls", "pwd", "touch", "mkdir", "cd", "rm"];
+    const validCommands = ["ls", "pwd", "touch", "mkdir", "cd", "rm", "clear"];
     const command = inputArr[0];
 
     if (!validCommands.includes(command)) {
@@ -158,7 +165,8 @@ class Tools {
       };
     }
 
-    const expectedArgsCount = command === "ls" || command === "pwd" ? 1 : 2;
+    const expectedArgsCount =
+      command === "ls" || command === "pwd" || command === "clear" ? 1 : 2;
 
     if (inputArr.length !== expectedArgsCount) {
       return {
