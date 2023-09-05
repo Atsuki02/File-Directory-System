@@ -19,7 +19,7 @@ class View {
   }
 
   static appendResultParagraph(parentDiv: HTMLElement, messege: string) {
-    parentDiv.innerHTML += `<p style="red">${messege}</p>`;
+    parentDiv.innerHTML += `<p style="color: red">${messege}</p>`;
   }
 
   static clearHistory(parentDiv: HTMLElement): void {

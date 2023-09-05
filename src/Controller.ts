@@ -17,7 +17,7 @@ config.CLIInput.addEventListener("keydown", handleKeyDownEvent);
 function handleKeyDownEvent(event: KeyboardEvent) {
   switch (event.key) {
     case "Enter":
-      submissionSearchEvent();
+      submissionSearchEvent(event);
       break;
     case "ArrowUp":
       getPrevCommand();
@@ -28,9 +28,11 @@ function handleKeyDownEvent(event: KeyboardEvent) {
   }
 }
 
-function submissionSearchEvent() {
+function submissionSearchEvent(event: Event) {
   let userInput = config.CLIInput.value;
   rootDir.commandHistory.addCommand(userInput);
+  event.preventDefault();
+  config.CLIInput.value = "";
 
   if (!config.CLIOutput) return;
 

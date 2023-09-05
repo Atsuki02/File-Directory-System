@@ -77,9 +77,22 @@ class FileSystem {
   }
 
   pwd(): string {
-    let result = "";
-    result += `<p>${this.curNode.name}</p>`;
-    return result;
+    let result = "/";
+
+    if (!this.curNode.children) {
+      return `<p>${result}</p>`;
+    }
+
+    const pathComponents = [];
+    let current = this.curNode.children.head;
+
+    while (current !== null) {
+      pathComponents.push(current.name);
+      current = current.next;
+    }
+
+    result += pathComponents.join("/");
+    return `<p>${result}</p>`;
   }
 
   rm(name: string): void {
