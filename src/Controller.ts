@@ -40,10 +40,7 @@ function submissionSearchEvent(event: Event) {
   const validatorResponse = Tools.inputArrayValidator(inputArr);
 
   if (!validatorResponse.isValid) {
-    View.appendResultParagraph(
-      config.CLIOutput,
-      validatorResponse.errorMessage
-    );
+    View.appendError(config.CLIOutput, validatorResponse.errorMessage);
   } else {
     View.appendEchoParagraph(config.CLIOutput, userInput);
     const result = Tools.executeCommand(inputArr, rootDir);

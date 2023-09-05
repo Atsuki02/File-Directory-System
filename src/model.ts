@@ -31,10 +31,7 @@ class FileSystem {
 
   touch(fileName: string): void {
     if (!this.curNode.children) {
-      View.appendResultParagraph(
-        config.CLIOutput,
-        "File can't be created here"
-      );
+      View.appendError(config.CLIOutput, "File can't be created here");
       return;
     }
     const newFileNode = new Node(fileName, "file", this.curNode);
@@ -45,11 +42,9 @@ class FileSystem {
     if (this.curNode?.children) {
       const newDirNode = new Node(folderName, "directory", this.curNode);
       this.curNode.children.add(newDirNode);
+      View.appendResult(config.CLIOutput, "New directory created");
     } else {
-      View.appendResultParagraph(
-        config.CLIOutput,
-        "Directory can't be created here"
-      );
+      View.appendError(config.CLIOutput, "Directory can't be created here");
     }
   }
 
@@ -70,7 +65,7 @@ class FileSystem {
       current = current.next;
     }
 
-    return View.appendResult(
+    return View.appendError(
       config.CLIOutput,
       `Directory or file '${path}' not found.`
     );
@@ -114,7 +109,7 @@ class FileSystem {
       current = current.next;
     }
 
-    View.appendResultParagraph(
+    View.appendError(
       config.CLIOutput,
       "The speified file of directory can't be found"
     );

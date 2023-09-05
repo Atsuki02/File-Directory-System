@@ -18,7 +18,7 @@ class View {
     parentDiv.innerHTML += `<p>${result}</p>`;
   }
 
-  static appendResultParagraph(parentDiv: HTMLElement, messege: string) {
+  static appendError(parentDiv: HTMLElement, messege: string) {
     parentDiv.innerHTML += `<p style="color: red">${messege}</p>`;
   }
 

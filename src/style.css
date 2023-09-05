@@ -101,9 +101,14 @@ li {
   font-size: 18px;
   color: #fff;
   margin: 8px;
+  margin-right: 0px;
   margin-bottom: 0px;
-  padding-right: 20px;
+  padding-left: 4px;
+  padding-right: 18px;
   border-right: 1px solid rgb(69, 67, 67);
+}
+
+.open-tab {
 }
 
 .terminal {
